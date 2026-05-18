@@ -1,5 +1,7 @@
 package com.digital.menu_generator.domain;
 
+import com.digital.menu_generator.domain.exceptions.MenuCreationLimitExceedException;
+
 import java.util.UUID;
 
 public class User {
@@ -22,16 +24,50 @@ public class User {
         this.nomeMarca = nomeMarca;
     }
 
-    public Boolean canCreateMenu() {
+    public boolean canCreateMenu() {
         return quantidadeMenus < 3;
     }
 
-    public Boolean isFirstLogin(){
+    public Menu createMenu(String nomeMenu){
+        if(!canCreateMenu()){
+            throw new MenuCreationLimitExceedException(this.name, this.id);
+        }
+
+        this.quantidadeMenus++;
+
+        return new Menu(null, this.id, nomeMenu);
+    }
+
+    public boolean isFirstLogin(){
         return email == null || email.isEmpty();
     }
 
-    public void incrementMenuCount() {
-        this.quantidadeMenus += 1;
+
+    public UUID getId() {
+        return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public Integer getQuantidadeMenus() {
+        return quantidadeMenus;
+    }
+
+    public String getUrlLogoStorage() {
+        return urlLogoStorage;
+    }
+
+    public String getNomeMarca() {
+        return nomeMarca;
+    }
 }

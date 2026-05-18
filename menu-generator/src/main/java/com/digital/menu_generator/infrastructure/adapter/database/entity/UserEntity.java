@@ -23,6 +23,16 @@ public class UserEntity {
     @Column(name = "brand_name")
     private String nomeMarca;
 
+    public UserEntity(String name, UUID id, String email, String telefone, Integer quantidadeMenus, String urlLogoStorage, String nomeMarca) {
+        this.name = name;
+        this.id = id;
+        this.email = email;
+        this.telefone = telefone;
+        this.quantidadeMenus = quantidadeMenus;
+        this.urlLogoStorage = urlLogoStorage;
+        this.nomeMarca = nomeMarca;
+    }
+
     public UUID getId() {
         return id;
     }

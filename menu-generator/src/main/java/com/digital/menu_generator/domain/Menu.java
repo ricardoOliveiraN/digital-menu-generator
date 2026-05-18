@@ -13,4 +13,16 @@ public class Menu {
         this.idUser = idUser;
         this.nomeMenu = nomeMenu;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getNomeMenu() {
+        return nomeMenu;
+    }
+
+    public UUID getIdUser() {
+        return idUser;
+    }
 }

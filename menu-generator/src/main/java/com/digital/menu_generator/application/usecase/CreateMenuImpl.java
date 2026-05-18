@@ -7,12 +7,13 @@ import com.digital.menu_generator.application.port.out.user.GetUserDetailsReposi
 import com.digital.menu_generator.application.port.out.user.SaveUserDetailsRepository;
 import com.digital.menu_generator.domain.Menu;
 import com.digital.menu_generator.domain.User;
+import com.digital.menu_generator.domain.exceptions.MenuCreationLimitExceedException;
 
 public class CreateMenuImpl implements CreateMenuUseCase {
 
-    private GetUserDetailsRepository getUserDetailsRepository;
-    private SaveUserDetailsRepository saveUserDetailsRepository;
-    private CreateMenuRepository createMenuRepository;
+    private final GetUserDetailsRepository getUserDetailsRepository;
+    private final SaveUserDetailsRepository saveUserDetailsRepository;
+    private final CreateMenuRepository createMenuRepository;
 
     public CreateMenuImpl(GetUserDetailsRepository getUserDetailsRepository, SaveUserDetailsRepository saveUserDetailsRepository, CreateMenuRepository createMenuRepository) {
         this.getUserDetailsRepository = getUserDetailsRepository;
@@ -23,18 +24,13 @@ public class CreateMenuImpl implements CreateMenuUseCase {
     @Override
     public void execute(CreateMenuCommand command) {
 
-        User userDatails = getUserDetailsRepository.findUser(command.idUser()); //já trata erro
+        User userDatails = getUserDetailsRepository.findUser(command.idUser());
 
-        if(!userDatails.canCreateMenu()){
-            //retorna erro
-        }
+        Menu menu = userDatails.createMenu(command.name());
 
-        Menu menu = new Menu(null ,command.idUser(), command.name());
+        createMenuRepository.saveMenu(menu);
 
-        createMenuRepository.saveMenu();
-
-        userDatails.incrementMenuCount();
-        saveUserDetailsRepository.saveUserDetails(); 
+        saveUserDetailsRepository.saveUserDetails(userDatails);
 
     }
 }

@@ -17,4 +17,15 @@ public class UserMappers {
         );
     }
 
+    public UserEntity toEntity(User user){
+        return new UserEntity(user.getName(),
+            user.getId(),
+            user.getEmail(),
+            user.getTelefone(),
+            user.getQuantidadeMenus(),
+            user.getUrlLogoStorage(),
+            user.getNomeMarca()
+        );
+    }
+
 }

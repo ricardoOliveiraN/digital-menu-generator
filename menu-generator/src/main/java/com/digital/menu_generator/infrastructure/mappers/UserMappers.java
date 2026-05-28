@@ -13,7 +13,8 @@ public class UserMappers {
             userEntity.getTelefone(),
             userEntity.getQuantidadeMenus(),
             userEntity.getUrlLogoStorage(),
-            userEntity.getNomeMarca()
+            userEntity.getNomeMarca(),
+            userEntity.getUrlWhatsapp()
         );
     }
 
@@ -24,7 +25,8 @@ public class UserMappers {
             user.getTelefone(),
             user.getQuantidadeMenus(),
             user.getUrlLogoStorage(),
-            user.getNomeMarca()
+            user.getNomeMarca(),
+            user.getUrlWhatsapp()
         );
     }
 

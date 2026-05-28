@@ -1,10 +1,12 @@
 package com.digital.menu_generator.infrastructure.entrypoint.exceptions;
 
 
-import com.digital.menu_generator.domain.exceptions.MenuCreationLimitExceedException;
-import com.digital.menu_generator.domain.exceptions.MenuPersistenceException;
-import com.digital.menu_generator.domain.exceptions.UserNotFounException;
-import com.digital.menu_generator.domain.exceptions.UserPersistenceException;
+import com.digital.menu_generator.domain.exceptions.generics.InvalidAttributesException;
+import com.digital.menu_generator.domain.exceptions.generics.StorageProviderException;
+import com.digital.menu_generator.domain.exceptions.menu.MenuCreationLimitExceedException;
+import com.digital.menu_generator.domain.exceptions.menu.MenuPersistenceException;
+import com.digital.menu_generator.domain.exceptions.user.UserNotFounException;
+import com.digital.menu_generator.domain.exceptions.user.UserPersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String > handleUserPersistenceException(UserPersistenceException ex) {
         log.error("[ERROR - Persistence]: failed to persist user: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save user to the database");
+    }
+
+    @ExceptionHandler(InvalidAttributesException.class)
+    public ResponseEntity<String> handleInvalidAttributesException(InvalidAttributesException ex) {
+        log.warn("[WARN - Validation]: invalid attributes provided for item creation, but: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid attributes provided for item creation");
+    }
+
+    @ExceptionHandler(StorageProviderException.class)
+    public ResponseEntity<String> handleStorageProviderException(StorageProviderException ex) {
+        log.error("[ERROR - Storage Provider]: failed to interact with storage provider, but: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to interact with storage provider");
     }
 
 }

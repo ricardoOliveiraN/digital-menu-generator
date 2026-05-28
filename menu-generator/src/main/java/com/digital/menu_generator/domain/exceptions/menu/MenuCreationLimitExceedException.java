@@ -1,4 +1,4 @@
-package com.digital.menu_generator.domain.exceptions;
+package com.digital.menu_generator.domain.exceptions.menu;
 
 import java.util.UUID;
 

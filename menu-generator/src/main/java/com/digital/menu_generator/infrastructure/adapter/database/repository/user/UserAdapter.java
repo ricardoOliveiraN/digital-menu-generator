@@ -3,8 +3,8 @@ package com.digital.menu_generator.infrastructure.adapter.database.repository.us
 import com.digital.menu_generator.application.port.out.user.GetUserDetailsRepository;
 import com.digital.menu_generator.application.port.out.user.SaveUserDetailsRepository;
 import com.digital.menu_generator.domain.User;
-import com.digital.menu_generator.domain.exceptions.UserNotFounException;
-import com.digital.menu_generator.domain.exceptions.UserPersistenceException;
+import com.digital.menu_generator.domain.exceptions.user.UserNotFounException;
+import com.digital.menu_generator.domain.exceptions.user.UserPersistenceException;
 import com.digital.menu_generator.infrastructure.mappers.UserMappers;
 
 import java.util.UUID;

@@ -1,6 +1,6 @@
 package com.digital.menu_generator.domain;
 
-import com.digital.menu_generator.domain.exceptions.MenuCreationLimitExceedException;
+import com.digital.menu_generator.domain.exceptions.menu.MenuCreationLimitExceedException;
 
 import java.util.UUID;
 
@@ -12,9 +12,10 @@ public class User {
     private String telefone;
     private Integer quantidadeMenus;
     private String urlLogoStorage;
+    private String urlWhatsapp;
     private String nomeMarca;
 
-    public User(UUID id, String name, String email, String telefone, Integer quantidadeMenus, String urlLogoStorage, String nomeMarca) {
+    public User(UUID id, String name, String email, String telefone, Integer quantidadeMenus, String urlLogoStorage, String nomeMarca, String urlWhatsapp) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -22,6 +23,7 @@ public class User {
         this.quantidadeMenus = quantidadeMenus;
         this.urlLogoStorage = urlLogoStorage;
         this.nomeMarca = nomeMarca;
+        this.urlWhatsapp = urlWhatsapp;
     }
 
     public boolean canCreateMenu() {
@@ -69,5 +71,9 @@ public class User {
 
     public String getNomeMarca() {
         return nomeMarca;
+    }
+
+    public String getUrlWhatsapp() {
+        return urlWhatsapp;
     }
 }

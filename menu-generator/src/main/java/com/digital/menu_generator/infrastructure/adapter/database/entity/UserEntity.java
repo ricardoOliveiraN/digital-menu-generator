@@ -20,10 +20,12 @@ public class UserEntity {
     private Integer quantidadeMenus;
     @Column(name = "logo_url")
     private String urlLogoStorage;
+    @Column(name = "whatsapp_url")
+    private String urlWhatsapp;
     @Column(name = "brand_name")
     private String nomeMarca;
 
-    public UserEntity(String name, UUID id, String email, String telefone, Integer quantidadeMenus, String urlLogoStorage, String nomeMarca) {
+    public UserEntity(String name, UUID id, String email, String telefone, Integer quantidadeMenus, String urlLogoStorage, String nomeMarca, String urlWhatsapp) {
         this.name = name;
         this.id = id;
         this.email = email;
@@ -31,6 +33,7 @@ public class UserEntity {
         this.quantidadeMenus = quantidadeMenus;
         this.urlLogoStorage = urlLogoStorage;
         this.nomeMarca = nomeMarca;
+        this.urlWhatsapp = urlWhatsapp;
     }
 
     public UUID getId() {
@@ -87,5 +90,13 @@ public class UserEntity {
 
     public void setNomeMarca(String nomeMarca) {
         this.nomeMarca = nomeMarca;
+    }
+
+    public String getUrlWhatsapp() {
+        return urlWhatsapp;
+    }
+
+    public void setUrlWhatsapp(String urlWhatsapp) {
+        this.urlWhatsapp = urlWhatsapp;
     }
 }

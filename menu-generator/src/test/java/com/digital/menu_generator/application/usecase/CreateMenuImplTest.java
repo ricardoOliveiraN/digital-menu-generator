@@ -1,18 +1,16 @@
 package com.digital.menu_generator.application.usecase;
 
 import com.digital.menu_generator.application.command.CreateMenuCommand;
-import com.digital.menu_generator.application.port.out.menu.CreateMenuRepository;
+import com.digital.menu_generator.application.port.out.menu.SaveMenuRepository;
 import com.digital.menu_generator.application.port.out.user.GetUserDetailsRepository;
 import com.digital.menu_generator.application.port.out.user.SaveUserDetailsRepository;
 import com.digital.menu_generator.domain.Menu;
 import com.digital.menu_generator.domain.User;
-import com.digital.menu_generator.domain.exceptions.MenuCreationLimitExceedException;
-import com.digital.menu_generator.domain.exceptions.MenuPersistenceException;
-import com.digital.menu_generator.domain.exceptions.UserNotFounException;
-import com.digital.menu_generator.domain.exceptions.UserPersistenceException;
+import com.digital.menu_generator.domain.exceptions.menu.MenuCreationLimitExceedException;
+import com.digital.menu_generator.domain.exceptions.menu.MenuPersistenceException;
+import com.digital.menu_generator.domain.exceptions.user.UserNotFounException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 
@@ -35,7 +33,7 @@ public class CreateMenuImplTest {
     private CreateMenuImpl createMenuImp;
 
     @Mock
-    private CreateMenuRepository createMenuRepository;
+    private SaveMenuRepository saveMenuRepository;
     @Mock
     private GetUserDetailsRepository getUserDetailsRepository;
     @Mock
@@ -48,7 +46,7 @@ public class CreateMenuImplTest {
     public void deveCriarMenu_eAtualizarUser() {
 
         // arrange
-        User user = new User(userId, "João", "x@x.com", "123", 2, "logo", "marca");
+        User user = new User(userId, "João", "x@x.com", "123", 2, "logo", "marca", null);
         CreateMenuCommand command = new CreateMenuCommand(userId, "Menu Teste");
 
         when(getUserDetailsRepository.findUser(userId)).thenReturn(user);
@@ -62,13 +60,13 @@ public class CreateMenuImplTest {
         assertEquals(3, user.getQuantidadeMenus());
 
         // assert interações e conteúdo salvo
-        verify(createMenuRepository).saveMenu(menuCaptor.capture());
+        verify(saveMenuRepository).saveMenu(menuCaptor.capture());
         Menu saved = menuCaptor.getValue();
         assertEquals("Menu Teste", saved.getNomeMenu());
         assertEquals(userId, saved.getIdUser());
 
         verify(saveUserDetailsRepository).saveUserDetails(user);
-        verifyNoMoreInteractions(createMenuRepository, saveUserDetailsRepository, getUserDetailsRepository);
+        verifyNoMoreInteractions(saveMenuRepository, saveUserDetailsRepository, getUserDetailsRepository);
 
     }
 
@@ -78,7 +76,7 @@ public class CreateMenuImplTest {
 
         //arrange
 
-        User user = new User(userId, "João", "x@gmail.com", "123", 3, "logo", "marca");
+        User user = new User(userId, "João", "x@gmail.com", "123", 3, "logo", "marca", null);
         CreateMenuCommand command = new CreateMenuCommand(userId, "Menu Teste");
 
         when(getUserDetailsRepository.findUser(userId)).thenReturn(user);
@@ -87,7 +85,7 @@ public class CreateMenuImplTest {
 
         assertThrows(MenuCreationLimitExceedException.class, () -> createMenuImp.execute(command));
 
-        verifyNoMoreInteractions(createMenuRepository, saveUserDetailsRepository);
+        verifyNoMoreInteractions(saveMenuRepository, saveUserDetailsRepository);
 
     }
 
@@ -100,7 +98,7 @@ public class CreateMenuImplTest {
         when(getUserDetailsRepository.findUser(userId)).thenThrow(new UserNotFounException("User not found with id: " + userId));
         //act & assert
         assertThrows(UserNotFounException.class, () -> createMenuImp.execute(command));
-        verifyNoMoreInteractions(createMenuRepository, saveUserDetailsRepository);
+        verifyNoMoreInteractions(saveMenuRepository, saveUserDetailsRepository);
     }
 
     @Test
@@ -108,18 +106,18 @@ public class CreateMenuImplTest {
     public void deveLancarErro_QuandoOcorreErroAoSalvarMenu(){
 
         //arrange
-        User user = new User(userId, "João", "txt@gmail.com", "123", 2, "logo", "marca");
+        User user = new User(userId, "João", "txt@gmail.com", "123", 2, "logo", "marca", null);
         CreateMenuCommand command = new CreateMenuCommand(userId, "Menu Teste");
         when(getUserDetailsRepository.findUser(userId)).thenReturn(user);
         doThrow(new MenuPersistenceException("Database error", new RuntimeException("DB connection failed")))
-                .when(createMenuRepository).saveMenu(any(Menu.class));
+                .when(saveMenuRepository).saveMenu(any(Menu.class));
 
         //act & assert
         assertThrows(MenuPersistenceException.class, () -> createMenuImp.execute(command));
         verify(getUserDetailsRepository).findUser(userId);
-        verify(createMenuRepository).saveMenu(any(Menu.class));
+        verify(saveMenuRepository).saveMenu(any(Menu.class));
 
-        verifyNoMoreInteractions(getUserDetailsRepository, createMenuRepository, saveUserDetailsRepository);
+        verifyNoMoreInteractions(getUserDetailsRepository, saveMenuRepository, saveUserDetailsRepository);
 
     }
 

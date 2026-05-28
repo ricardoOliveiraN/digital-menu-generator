@@ -25,4 +25,5 @@ public class Menu {
     public UUID getIdUser() {
         return idUser;
     }
+
 }

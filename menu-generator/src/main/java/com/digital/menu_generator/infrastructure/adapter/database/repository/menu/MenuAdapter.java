@@ -1,13 +1,13 @@
 package com.digital.menu_generator.infrastructure.adapter.database.repository.menu;
 
-import com.digital.menu_generator.application.port.out.menu.CreateMenuRepository;
+import com.digital.menu_generator.application.port.out.menu.SaveMenuRepository;
 import com.digital.menu_generator.domain.Menu;
-import com.digital.menu_generator.domain.exceptions.MenuPersistenceException;
+import com.digital.menu_generator.domain.exceptions.menu.MenuPersistenceException;
 import com.digital.menu_generator.infrastructure.adapter.database.entity.MenuEntity;
 import com.digital.menu_generator.infrastructure.adapter.database.entity.UserEntity;
 import jakarta.persistence.EntityManager;
 
-public class MenuAdapter implements CreateMenuRepository {
+public class MenuAdapter implements SaveMenuRepository {
 
     private final MenuRepository menuRepository;
     private final EntityManager entityManager;

@@ -31,8 +31,39 @@ public class Item {
         this.descricaoItem = descricaoItem;
         this.precoItem = precoItem;
         this.imagePath = imagePath;
+
         this.posicaoTela = posicaoTela;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public UUID getIdMenu() {
+        return idMenu;
+    }
+
+    public String getNomeItem() {
+        return nomeItem;
+    }
+
+    public String getDescricaoItem() {
+        return descricaoItem;
+    }
+
+
+    public BigDecimal getPrecoItem() {
+        return precoItem;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public Integer getPosicaoTela() {
+        return posicaoTela;
+    }
+
 
     public static String gerarPathImagem(UUID idMenuNew){
 
@@ -44,4 +75,6 @@ public class Item {
         String idUnico = UUID.randomUUID().toString();
         return "images/" + idMenuNew + "/" + timestamp + "-" + idUnico + ".jpg";
     }
+
+
 }

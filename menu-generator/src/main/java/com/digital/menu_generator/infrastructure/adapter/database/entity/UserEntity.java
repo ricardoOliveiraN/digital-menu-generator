@@ -14,7 +14,7 @@ public class UserEntity {
     private String name;
     @Column(unique = true, nullable = false)
     private String email;
-    @Column(unique = true, nullable = false, name = "phone_number")
+    @Column(unique = true, name = "phone_number")
     private String telefone;
     @Column(name = "menu_count")
     private Integer quantidadeMenus;

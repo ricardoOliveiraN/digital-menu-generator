@@ -33,7 +33,7 @@ public class UserAdapter implements GetUserDetailsRepository, SaveUserDetailsRep
     public void saveUserDetails(User user) {
 
         try{
-            userRepository.save(userMappers.toEntity(user));
+            userRepository.saveAndFlush(userMappers.toEntity(user));
         }catch(Exception e){
 
             throw new UserPersistenceException("Error saving user details for: " + user.getId(), e);

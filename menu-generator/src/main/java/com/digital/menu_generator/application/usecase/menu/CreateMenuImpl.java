@@ -1,7 +1,7 @@
-package com.digital.menu_generator.application.usecase;
+package com.digital.menu_generator.application.usecase.menu;
 
 import com.digital.menu_generator.application.command.CreateMenuCommand;
-import com.digital.menu_generator.application.port.in.CreateMenuUseCase;
+import com.digital.menu_generator.application.port.in.menu.CreateMenuUseCase;
 import com.digital.menu_generator.application.port.out.menu.SaveMenuRepository;
 import com.digital.menu_generator.application.port.out.user.GetUserDetailsRepository;
 import com.digital.menu_generator.application.port.out.user.SaveUserDetailsRepository;

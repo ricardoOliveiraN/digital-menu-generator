@@ -3,7 +3,11 @@ package com.digital.menu_generator.infrastructure.entrypoint.exceptions;
 
 import com.digital.menu_generator.domain.exceptions.generics.InvalidAttributesException;
 import com.digital.menu_generator.domain.exceptions.generics.StorageProviderException;
+import com.digital.menu_generator.domain.exceptions.item.ItemConflictException;
+import com.digital.menu_generator.domain.exceptions.item.ItemPersistenceException;
 import com.digital.menu_generator.domain.exceptions.menu.MenuCreationLimitExceedException;
+import com.digital.menu_generator.domain.exceptions.menu.MenuInUseException;
+import com.digital.menu_generator.domain.exceptions.menu.MenuNotFoundExcepetion;
 import com.digital.menu_generator.domain.exceptions.menu.MenuPersistenceException;
 import com.digital.menu_generator.domain.exceptions.user.UserNotFounException;
 import com.digital.menu_generator.domain.exceptions.user.UserPersistenceException;
@@ -55,4 +59,27 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to interact with storage provider");
     }
 
+    @ExceptionHandler(ItemPersistenceException.class)
+    public ResponseEntity<String> handleItemPersistenceException(ItemPersistenceException ex) {
+        log.error("[ERROR - Persistence]: failed to persist item: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save item to the database");
+    }
+
+    @ExceptionHandler(MenuNotFoundExcepetion.class)
+    public ResponseEntity<String> handleMenuNotFoundException(MenuNotFoundExcepetion ex) {
+        log.warn("[WARN - Not Found]: menu not found, but: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Menu not found");
+    }
+
+    @ExceptionHandler(MenuInUseException.class)
+    public ResponseEntity<String> handleMenuInUseException(MenuInUseException ex) {
+        log.warn("[WARN - Conflict]: menu is in use, but: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Cannot delete menu because it is in use");
+    }
+
+    @ExceptionHandler(ItemConflictException.class)
+    public ResponseEntity<String> handleItemConflictException(ItemConflictException ex) {
+        log.warn("[WARN - Conflict]: item conflict, but: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Item conflict: an item with the position or image_path already exists in the menu");
+    }
 }

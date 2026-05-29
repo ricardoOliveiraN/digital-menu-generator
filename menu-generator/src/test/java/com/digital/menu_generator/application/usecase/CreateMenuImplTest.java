@@ -4,6 +4,7 @@ import com.digital.menu_generator.application.command.CreateMenuCommand;
 import com.digital.menu_generator.application.port.out.menu.SaveMenuRepository;
 import com.digital.menu_generator.application.port.out.user.GetUserDetailsRepository;
 import com.digital.menu_generator.application.port.out.user.SaveUserDetailsRepository;
+import com.digital.menu_generator.application.usecase.menu.CreateMenuImpl;
 import com.digital.menu_generator.domain.Menu;
 import com.digital.menu_generator.domain.User;
 import com.digital.menu_generator.domain.exceptions.menu.MenuCreationLimitExceedException;

@@ -18,6 +18,11 @@ public class MenuEntity {
 
     private String name;
 
+    public MenuEntity(String name, UserEntity user) {
+        this.user = user;
+        this.name = name;
+    }
+
     public UUID getId() {
         return id;
     }

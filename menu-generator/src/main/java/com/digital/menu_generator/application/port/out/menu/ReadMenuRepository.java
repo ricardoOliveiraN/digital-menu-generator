@@ -4,8 +4,8 @@ import com.digital.menu_generator.domain.Menu;
 
 import java.util.UUID;
 
-public interface GetMenuRepository {
+public interface ReadMenuRepository {
 
-    Menu findMenuByIdUserAndIdMenu(UUID idUser, UUID idMenu);
+    Menu readMenu(UUID idMenu, UUID idUser);
 
 }

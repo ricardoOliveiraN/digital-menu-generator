@@ -1,6 +1,7 @@
 package com.digital.menu_generator.infrastructure.adapter.database.repository.menu;
 
 import com.digital.menu_generator.application.port.out.menu.DeleteMenuRepository;
+import com.digital.menu_generator.application.port.out.menu.ReadMenuRepository;
 import com.digital.menu_generator.application.port.out.menu.SaveMenuRepository;
 import com.digital.menu_generator.domain.Menu;
 import com.digital.menu_generator.domain.exceptions.menu.MenuInUseException;
@@ -8,19 +9,22 @@ import com.digital.menu_generator.domain.exceptions.menu.MenuNotFoundExcepetion;
 import com.digital.menu_generator.domain.exceptions.menu.MenuPersistenceException;
 import com.digital.menu_generator.infrastructure.adapter.database.entity.MenuEntity;
 import com.digital.menu_generator.infrastructure.adapter.database.entity.UserEntity;
+import com.digital.menu_generator.infrastructure.mappers.MenuMappers;
 import jakarta.persistence.EntityManager;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.UUID;
 
-public class MenuAdapter implements SaveMenuRepository, DeleteMenuRepository {
+public class MenuAdapter implements SaveMenuRepository, DeleteMenuRepository, ReadMenuRepository {
 
     private final MenuRepository menuRepository;
     private final EntityManager entityManager;
+    private final MenuMappers menuMappers;
 
-    public MenuAdapter(MenuRepository menuRepository, EntityManager entityManager) {
+    public MenuAdapter(MenuRepository menuRepository, EntityManager entityManager, MenuMappers menuMappers) {
         this.entityManager = entityManager;
         this.menuRepository = menuRepository;
+        this.menuMappers = menuMappers;
     }
 
 
@@ -56,5 +60,25 @@ public class MenuAdapter implements SaveMenuRepository, DeleteMenuRepository {
         }catch (Exception e) {
             throw new MenuPersistenceException("Error deleting menu with ID: " + idMenu + " for user: " + idUser, e);
         }
+    }
+
+    @Override
+    public Menu readMenu(UUID idMenu, UUID idUser) {
+        try{
+
+            MenuEntity menu = menuRepository.findByIdAndUserId(idMenu, idUser);
+
+            if(menu == null) {
+                throw new MenuNotFoundExcepetion("No menu found with ID: " + idMenu + " for user: " + idUser);
+            }
+
+            return menuMappers.toDomain(menu);
+        }catch(MenuNotFoundExcepetion e){
+            throw e;
+        }catch(Exception e) {
+            throw new MenuPersistenceException("Error reading menu with ID: " + idMenu + " for user: " + idUser, e);
+        }
+
+
     }
 }
